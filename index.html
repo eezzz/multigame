@@ -808,14 +808,16 @@ function getMasteryPercent(table) {
 // ====== QUESTIONS ======
 function generatePracticeQuestions(table) {
   const qs = [];
+  // Base: all facts 1×table through table×table
   for (let i=1;i<=table;i++) qs.push({a:i, b:table, answer:i*table});
   shuffle(qs);
+  // Add extra rounds for weak spots
   for (let i=1;i<=table;i++) {
     const key=`${i}x${table}`, m=state.mastery[key];
     if (m && m.attempts>0 && (m.correct/m.attempts)<0.7)
       qs.push({a:i, b:table, answer:i*table});
   }
-  return qs.slice(0,10);
+  return qs;
 }
 
 // Weighted random: skews toward higher numbers for harder difficulties
